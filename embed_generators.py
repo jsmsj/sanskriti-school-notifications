@@ -38,6 +38,12 @@ async def generate_navigation_embeds_list(author:discord.Member):
     return list_of_embeds
 
 async def generate_x_embed_list(x,author:discord.Member):
+    possible_x = {
+        'news':"Circulars and Updates",
+        'CBSEdoe':"CBSE & DoE Circulars",
+        'achievements':'Achievements & Activities',
+        'sports':'Sports Corner'
+    }
     res = await get_updates_content()
     resp = res[x]
     list_of_embeds = []
@@ -58,7 +64,7 @@ async def generate_x_embed_list(x,author:discord.Member):
             desc += f"[{text}]({nlnk})"
         em.description = desc
         list_of_embeds.append(em)
-    master = discord.Embed(title="Circulars and Updates",description=f"Use the buttons to navigate through the most recent 15 circulars. To view the rest kindly visit the [school website]({base})",color=discord.Color.green())
+    master = discord.Embed(title=possible_x[x],description=f"Use the buttons to navigate through the most recent 15 circulars. To view the rest kindly visit the [school website]({base})",color=discord.Color.green())
     master.set_thumbnail(url=author.display_avatar)
     master.set_footer(text=f"Command invoked by {author.display_name}")
     list_of_embeds.insert(0,master)

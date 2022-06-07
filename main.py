@@ -4,6 +4,7 @@ import discord
 import os
 import embed_generators as emg
 from discord.ext import pages
+import misspellings as ms
 
 load_dotenv()
 
@@ -31,15 +32,21 @@ async def circulars(ctx):
 
 @bot.command()
 async def cbse(ctx):
-    await ctx.send("hi")
+    ems = await emg.generate_x_embed_list('CBSEdoe',ctx.author)
+    paginator = pages.Paginator(pages=ems)
+    await paginator.send(ctx)
 
 @bot.command()
-async def achivements(ctx):
-    await ctx.send("hi")
+async def achievements(ctx):
+    ems = await emg.generate_x_embed_list("achievements",ctx.author)
+    paginator = pages.Paginator(pages=ems)
+    await paginator.send(ctx)
 
 @bot.command()
 async def sports(ctx):
-    await ctx.send("hi")
+    ems = await emg.generate_x_embed_list("sports",ctx.author)
+    paginator = pages.Paginator(pages=ems)
+    await paginator.send(ctx)
 
 if __name__ == '__main__':
     # When running this file, if it is the 'main' file
