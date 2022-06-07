@@ -25,7 +25,9 @@ async def site(ctx):
 
 @bot.command()
 async def circulars(ctx):
-    await ctx.send("hi")
+    ems = await emg.generate_x_embed_list('news',ctx.author)
+    paginator = pages.Paginator(pages=ems)
+    await paginator.send(ctx)
 
 @bot.command()
 async def cbse(ctx):

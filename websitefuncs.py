@@ -1,7 +1,6 @@
 import aiohttp
-import asyncio
-import requests
-import time
+from bs4 import BeautifulSoup
+
 
 nav_url = "http://www.sanskritischool.edu.in/assets/json/navigation.json"
 updates_url = "http://www.sanskritischool.edu.in/assets/json/updates.json"
@@ -24,3 +23,15 @@ def get_href(path):
         return base
     else:
         return path
+
+def remove_tags(html):
+  
+    # parse html content
+    soup = BeautifulSoup(html, "html.parser")
+  
+    for data in soup(['style', 'script']):
+        # Remove tags
+        data.decompose()
+  
+    # return data by retrieving the tag content
+    return ' '.join(soup.stripped_strings)
