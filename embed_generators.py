@@ -49,7 +49,7 @@ async def generate_x_embed_list(x,author:discord.Member):
     list_of_embeds = []
     temp = itertools.islice(resp['items'],0,15)
     for val in temp:
-        em = discord.Embed(title=f"News ({val['date']})",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        em = discord.Embed(title=f"{possible_x[x]} ({val['date']})",color=discord.Color.green(),timestamp=datetime.datetime.now())
         em.set_footer(text=f"Command invoked by {author.display_name}")
         desc = f"*<t:{make_timestamp(val['date'])}:R>*\n\n"
         text = remove_tags(val["message"].replace("<br>","\n"))
@@ -69,3 +69,25 @@ async def generate_x_embed_list(x,author:discord.Member):
     master.set_footer(text=f"Command invoked by {author.display_name}")
     list_of_embeds.insert(0,master)
     return list_of_embeds
+
+async def generate_notification_embed(notif_data):
+    possible_x = {
+        'news':"Circulars and Updates",
+        'CBSEdoe':"CBSE & DoE Circulars",
+        'achievements':'Achievements & Activities',
+        'sports':'Sports Corner'
+    }
+    emb = discord.Embed(title=f"{possible_x[notif_data[0]]} ({notif_data[1]['date']})",color=discord.Color.green(),timestamp=datetime.datetime.now())
+    desc = f"*<t:{make_timestamp(notif_data[1]['date'])}:R>*\n\n"
+    text = remove_tags(notif_data[1]["message"].replace("<br>","\n"))
+    if notif_data[1]['type'] == "text":
+        desc += text
+    elif notif_data[1]['type'] == "link":
+        lnk = notif_data[1]['href']
+        if lnk.startswith("http"):
+            nlnk = lnk
+        else:
+            nlnk = get_href(urllib.parse.quote(notif_data[1]['href']))
+        desc += f"[{text}]({nlnk})"
+    emb.description = desc
+    return emb
