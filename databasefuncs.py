@@ -1,9 +1,12 @@
 import motor.motor_asyncio
 import os
 from dotenv import  load_dotenv
+import certifi
+
+ca = certifi.where()
 load_dotenv()
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('DBURL'))
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('DBURL'),tlsCAFile=ca)
 db = client['ss_notifications_bot_db']
 collection = db['updates_json']
 
