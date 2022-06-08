@@ -18,11 +18,10 @@ ls_activities = cycle(["sanskritischool.edu.in",f"{os.environ.get('PREFIX')}help
 
 @tasks.loop(seconds=60)
 async def status_swap():
-    await bot.change_presence(activity=next(ls_activities))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching,name=next(ls_activities)))
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="sanskritischool.edu.in")) #TODO add a list of activities somewhere
     check_new_notifs.start()
     status_swap.start()
     print("Bot is ready!")
