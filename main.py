@@ -71,7 +71,7 @@ async def source(ctx):
 @bot.command()
 async def info(ctx):
     emb = discord.Embed(title="About Me",color=discord.Color.green())
-    emb.description = "This bot was created with the purpose of sending the announcements made on the website directly to discord, for better accessibility.\nThe announcements are sent to the set discord channel. Along with that, the bot also has features to retrivr the last 15 announcements made in all avaialble categories."
+    emb.description = "This bot was created with the purpose of sending the announcements made on the website directly to discord, for better accessibility.\nThe announcements are sent to the set discord channel. Along with that, the bot also has features to retrieve the last 15 announcements made in all avaialble categories."
     emb.add_field(name="Help command",value=f"`{os.environ.get('PREFIX')}help`")
     emb.add_field(name="Source Code",value="[Github](https://github.com/jsmsj/sanskriti-school-notifications)")
     emb.add_field(name="Creater",value="<@!713276935064649792>")
