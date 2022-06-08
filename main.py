@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from itertools import cycle
 from discord.ext import commands,tasks
 import discord
 import os
@@ -11,12 +12,19 @@ load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix=os.environ.get("PREFIX"),intents=intents, case_insensitive=True) #TODO help_command=None,
+bot = commands.Bot(command_prefix=os.environ.get("PREFIX"),intents=intents, case_insensitive=True,help_command=None)
+
+ls_activities = cycle(["sanskritischool.edu.in",f"{os.environ.get('PREFIX')}help"])
+
+@tasks.loop(seconds=60)
+async def status_swap():
+    await bot.change_presence(activity=next(ls_activities))
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="sanskritischool.edu.in")) #TODO add a list of activities somewhere
     check_new_notifs.start()
+    status_swap.start()
     print("Bot is ready!")
 
 @bot.event
@@ -57,6 +65,51 @@ async def sports(ctx):
     paginator = pages.Paginator(pages=ems)
     await paginator.send(ctx)
 
+@bot.command()
+async def source(ctx):
+    await ctx.send("https://github.com/jsmsj/sanskriti-school-notifications")
+
+@bot.command()
+async def info(ctx):
+    emb = discord.Embed(title="About Me",color=discord.Color.green())
+    emb.description = "This bot was created with the purpose of sending the announcements made on the website directly to discord, for better accessibility.\nThe announcements are sent to the set discord channel. Along with that, the bot also has features to retrivr the last 15 announcements made in all avaialble categories."
+    emb.add_field(name="Help command",value=f"`{os.environ.get('PREFIX')}help`")
+    emb.add_field(name="Source Code",value="[Github](https://github.com/jsmsj/sanskriti-school-notifications)")
+    emb.add_field(name="Creater",value="<@!713276935064649792>")
+    emb.set_footer(text="This bot is not affiliated with, endorsed or sponsored by Sanskriti School.")
+    await ctx.send(embed=emb)
+
+@bot.group(invoke_without_command = True)
+async def help(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author))
+
+@help.command()
+async def site(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'site'))
+
+@help.command()
+async def circulars(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'circulars'))
+
+@help.command()
+async def cbse(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'cbse'))
+
+@help.command()
+async def achievements(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'achievements'))
+
+@help.command()
+async def sports(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'sports'))
+
+@help.command()
+async def source(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'source'))
+
+@help.command()
+async def info(ctx):
+    await ctx.send(embed=emg.generate_help(ctx.author,'info'))
 
 @tasks.loop(minutes=1)
 async def check_new_notifs():

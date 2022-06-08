@@ -3,6 +3,9 @@ import discord
 import datetime
 import itertools
 import urllib.parse
+from dotenv import  load_dotenv
+import os
+load_dotenv()
 
 def make_timestamp(date:str):
     date += " 12:00:00"
@@ -90,4 +93,85 @@ async def generate_notification_embed(notif_data):
             nlnk = get_href(urllib.parse.quote(notif_data[1]['href']))
         desc += f"[{text}]({nlnk})"
     emb.description = desc
+    return emb
+
+def generate_help(author:discord.Member,cmd=None):
+    if not cmd:
+        emb = discord.Embed(title="Help is here",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_author(name=author.display_name,icon_url=author.display_avatar)
+        emb.set_footer(text="This bot is not affiliated with, endorsed or sponsored by Sanskriti School.")
+        emb.set_thumbnail(url="https://i.imgur.com/Mh4PoJ5.png")
+        emb.description = f"Run `{os.environ.get('PREFIX')}help <command_name>` for extended help on that particular command"
+        emb.add_field(
+            name="Navigate through the website",
+            value=f"`{os.environ.get('PREFIX')}site`"
+        )
+        emb.add_field(
+            name="Check recent circulars",
+            value=f"`{os.environ.get('PREFIX')}circulars`"
+        )
+        emb.add_field(
+            name="See CBSE announcements",
+            value=f"`{os.environ.get('PREFIX')}cbse`"
+        )
+        emb.add_field(
+            name="See recent achievements",
+            value=f"`{os.environ.get('PREFIX')}achievements`"
+        )
+        emb.add_field(
+            name="See details about sports",
+            value=f"`{os.environ.get('PREFIX')}sports`"
+        )
+        emb.add_field(
+            name="Check out the source code of the bot",
+            value=f"`{os.environ.get('PREFIX')}source`"
+        )
+        emb.add_field(
+            name="About me",
+            value=f"`{os.environ.get('PREFIX')}info`"
+        )
+    elif cmd == "site":
+        emb = discord.Embed(title="Site command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to navigate through the navigation bar present on sanskriti school website. i.e. Access the links present in this section via discord."
+        emb.set_image(url="https://i.imgur.com/sDgDlH7.png")
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}site`")
+    elif cmd == "circulars":
+        emb = discord.Embed(title="Circulars and Updates command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to see the last 15 circulars posted on the website."
+        emb.set_image(url="https://i.imgur.com/c5oH2Zb.png")
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}circulars`")
+    elif cmd == "cbse":
+        emb = discord.Embed(title="CBSE and DOE circulars command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to see the last 15 circulars issued by CBSE and/or DOE posted on the website."
+        emb.set_image(url="https://i.imgur.com/cof5Kuj.png")
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}cbse`")
+    elif cmd == "achievements":
+        emb = discord.Embed(title="Achievements command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to see the last 15 achivements by students, posted on the website."
+        emb.set_image(url="https://i.imgur.com/mj0yyVg.png")
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}achievements`")
+    elif cmd == "sports":
+        emb = discord.Embed(title="Sports command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to see the last 15 circulars on sports, posted on the website."
+        emb.set_image(url="https://i.imgur.com/HZ2SR2n.png")
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}sports`")
+    elif cmd=="source":
+        emb = discord.Embed(title="Source command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to see my source code."
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}source`")
+    elif cmd=="info":
+        emb = discord.Embed(title="Info command",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+        emb.description = "Use this command to know more about me."
+        emb.add_field(name="Syntax",value=f"`{os.environ.get('PREFIX')}info`")
+    else:
+        emb=discord.Embed(title="Error: Command Not Found",color=discord.Color.green(),timestamp=datetime.datetime.now())
+        emb.set_footer(text=f"Command invoked by {author.display_name}")
+
     return emb
