@@ -28,10 +28,10 @@ async def on_ready():
 
 @bot.event
 async def on_guild_join(guild:discord.Guild):
-    overwrites = {
-        guild.default_role:discord.PermissionOverwrite(send_messages=False)
-    }
-    channel = await guild.create_text_channel(name="sanskriti-school-notifications",reason=f"Channel Created by Sanskriti School Notifications Bot, to post the new circulars and updates present on the website {base}. Do not change the name of the channel, else the bot will create a new channel to post to.",overwrites=overwrites,position=0)
+    # overwrites = {
+    #     guild.default_role:discord.PermissionOverwrite(send_messages=False)
+    # }
+    channel = await guild.create_text_channel(name="sanskriti-school-notifications",reason=f"Channel Created by Sanskriti School Notifications Bot, to post the new circulars and updates present on the website {base}. Do not change the name of the channel, else the bot will create a new channel to post to.",position=0) #overwrites=overwrites,
 
 
 @bot.command()
@@ -134,10 +134,10 @@ async def check_new_notifs():
                             await channel.send(embed=emb)
                             sent = True
                     if not sent:
-                        overwrites = {
-                                guild.default_role:discord.PermissionOverwrite(send_messages=False)
-                            }
-                        ch = await guild.create_text_channel(name="sanskriti-school-notifications",reason=f"Channel Created by Sanskriti School Notifications Bot, to post the new circulars and updates present on the website {base}. Do not change the name of the channel, else the bot will create a new channel to post to.",overwrites=overwrites,position=0)
+                        # overwrites = {
+                        #         guild.default_role:discord.PermissionOverwrite(send_messages=False)
+                        #     }
+                        ch = await guild.create_text_channel(name="sanskriti-school-notifications",reason=f"Channel Created by Sanskriti School Notifications Bot, to post the new circulars and updates present on the website {base}. Do not change the name of the channel, else the bot will create a new channel to post to.",position=0) #,overwrites=overwrites
                         await ch.send(embed=emb)
                         sent = True
                 await update_x(i[0],cntnt)
